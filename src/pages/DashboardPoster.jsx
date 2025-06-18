@@ -1,38 +1,28 @@
-// client/src/pages/DashboardPoster.jsx
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import JobForm from '../components/JobPoster/JobForm';
 import JobListings from '../components/JobPoster/JobListings';
 import ApplicantList from '../components/JobPoster/ApplicantList';
 import ApplicationStatusUpdate from '../components/JobPoster/ApplicationStatusUpdate';
-import LoadingSpinner from '../components/Common/LoadingSpinner'; // If content loads
+import LoadingSpinner from '../components/Common/LoadingSpinner';
 
-/**
- * @component DashboardPoster
- * @description The main dashboard for job posters.
- * Manages the display of job listings, job creation/editing, and applicant management.
- * @param {Object} props
- * @param {Function} props.setCurrentPage - Function to change the overall app page (e.g., to profile).
- */
 const DashboardPoster = ({ setCurrentPage }) => {
     const { user, loading: authLoading } = useAuth();
-    const [view, setView] = useState('list_jobs'); // 'list_jobs', 'create_job', 'edit_job', 'view_applicants', 'update_status'
-    const [selectedJobId, setSelectedJobId] = useState(null); // For editing or viewing applicants
-    const [selectedApplicationId, setSelectedApplicationId] = useState(null); // For updating status
+    const [view, setView] = useState('list_jobs'); 
+    const [selectedJobId, setSelectedJobId] = useState(null); 
+    const [selectedApplicationId, setSelectedApplicationId] = useState(null); 
 
-    // Ensure only job posters can access this dashboard
     if (authLoading) {
         return <LoadingSpinner />;
     }
     if (!user || user.role !== 'job_poster') {
-        // This case should ideally be handled by a PrivateRoute or App.jsx redirect
-        // For now, just show a message or redirect home.
+        
         setCurrentPage('home');
         return null;
     }
 
     const handleCreateJobClick = () => {
-        setSelectedJobId(null); // Ensure no job is selected for editing
+        setSelectedJobId(null); 
         setView('create_job');
     };
 
@@ -52,18 +42,18 @@ const DashboardPoster = ({ setCurrentPage }) => {
     };
 
     const handleFormSuccess = () => {
-        setView('list_jobs'); // Go back to job listings after create/edit success
-        setSelectedJobId(null); // Clear selected job
+        setView('list_jobs'); 
+        setSelectedJobId(null);
         setSelectedApplicationId(null);
     };
 
     const handleCancel = () => {
-        // If canceling from update_status, go back to view_applicants
+       
         if (view === 'update_status') {
             setView('view_applicants');
             setSelectedApplicationId(null);
         } else {
-            setView('list_jobs'); // Otherwise, go back to job listings
+            setView('list_jobs'); 
             setSelectedJobId(null);
             setSelectedApplicationId(null);
         }
@@ -82,7 +72,7 @@ const DashboardPoster = ({ setCurrentPage }) => {
             case 'create_job':
                 return (
                     <JobForm
-                        jobId={null} // No jobId for creation
+                        jobId={null} 
                         onSuccess={handleFormSuccess}
                         onCancel={handleCancel}
                     />
@@ -99,7 +89,7 @@ const DashboardPoster = ({ setCurrentPage }) => {
                 return (
                     <ApplicantList
                         jobId={selectedJobId}
-                        onBack={handleCancel} // Back to list_jobs
+                        onBack={handleCancel} 
                         onUpdateStatus={handleUpdateApplicationStatusClick}
                     />
                 );
@@ -107,8 +97,8 @@ const DashboardPoster = ({ setCurrentPage }) => {
                 return (
                     <ApplicationStatusUpdate
                         applicationId={selectedApplicationId}
-                        onSuccess={handleFormSuccess} // Refreshes applicant list after update
-                        onCancel={handleCancel} // Back to view_applicants
+                        onSuccess={handleFormSuccess} 
+                        onCancel={handleCancel}
                     />
                 );
             default:

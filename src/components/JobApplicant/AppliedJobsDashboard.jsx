@@ -1,17 +1,9 @@
-// client/src/components/JobApplicant/AppliedJobsDashboard.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { getMyApplications, deleteApplication } from '../../api/applications';
 import { useAuth } from '../../hooks/useAuth';
 import { useNotifications } from '../../hooks/useNotifications';
 import LoadingSpinner from '../Common/LoadingSpinner';
 
-/**
- * @component AppliedJobsDashboard
- * @description Displays a dashboard for job applicants to view their applied jobs,
- * track status, and filter/sort applications.
- * @param {Object} props
- * @param {Function} props.onBackToBrowse - Callback to navigate back to browsing all jobs.
- */
 const AppliedJobsDashboard = ({ onBackToBrowse }) => {
     const { user } = useAuth();
     const { addNotification } = useNotifications();
@@ -19,7 +11,7 @@ const AppliedJobsDashboard = ({ onBackToBrowse }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [filterStatus, setFilterStatus] = useState('');
-    const [sortBy, setSortBy] = useState('appliedDate_desc'); // Default sort
+    const [sortBy, setSortBy] = useState('appliedDate_desc'); 
 
     const fetchApplications = useCallback(async () => {
         setLoading(true);
@@ -50,7 +42,7 @@ const AppliedJobsDashboard = ({ onBackToBrowse }) => {
             try {
                 await deleteApplication(applicationId);
                 addNotification('Application withdrawn successfully!', 'success');
-                fetchApplications(); // Re-fetch applications to update the list
+                fetchApplications(); 
             } catch (err) {
                 addNotification(`Failed to withdraw application: ${err}`, 'error');
                 setError(`Failed to withdraw application: ${err}`);
@@ -81,8 +73,6 @@ const AppliedJobsDashboard = ({ onBackToBrowse }) => {
                     Browse More Jobs
                 </button>
             </div>
-
-            {/* Filter and Sort Controls */}
             <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
                 <div className="flex-1 min-w-[150px]">
                     <label htmlFor="filterStatus" className="block text-sm font-medium text-gray-700">Filter by Status</label>

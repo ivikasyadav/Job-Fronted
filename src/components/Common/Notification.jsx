@@ -1,22 +1,13 @@
-// client/src/components/Common/Notification.jsx
-import React from 'react';
-import { useNotifications } from '../../hooks/useNotifications'; // Import hook to manage notifications
 
-/**
- * @component Notification
- * @description Displays a single notification message.
- * @param {Object} props
- * @param {string} props.id - Unique ID of the notification.
- * @param {string} props.message - The message to display.
- * @param {string} props.type - Type of notification ('success', 'error', 'info', 'warning').
- */
+import React from 'react';
+import { useNotifications } from '../../hooks/useNotifications';
+
 const Notification = ({ id, message, type }) => {
     const { removeNotification } = useNotifications();
 
-    // Determine styling based on notification type
     let bgColor;
     let borderColor;
-    let textColor = "text-white"; // Default text color
+    let textColor = "text-white"; 
 
     switch (type) {
         case 'success':
@@ -34,7 +25,7 @@ const Notification = ({ id, message, type }) => {
         case 'warning':
             bgColor = 'bg-yellow-500';
             borderColor = 'border-yellow-600';
-            textColor = "text-gray-800"; // For yellow background, black text is better
+            textColor = "text-gray-800"; 
             break;
         default:
             bgColor = 'bg-gray-700';
@@ -44,7 +35,6 @@ const Notification = ({ id, message, type }) => {
     return (
         <div
             className={`fixed top-4 right-4 ${bgColor} ${borderColor} border rounded-lg px-6 py-3 shadow-lg transition-all duration-300 ease-in-out transform translate-y-0 opacity-100 z-50`}
-        // Optional: Add an exit animation if needed by changing classes on unmount
         >
             <div className="flex items-center justify-between">
                 <p className={`font-semibold ${textColor}`}>{message}</p>

@@ -1,18 +1,9 @@
-// client/src/components/JobPoster/JobForm.jsx
 import React, { useState, useEffect } from 'react';
 import { createJob, updateJob, getJobById } from '../../api/jobs';
 import { useNotifications } from '../../hooks/useNotifications';
 import LoadingSpinner from '../Common/LoadingSpinner';
 import { validateRequired, validateDateInFuture } from '../../utils/validation';
 
-/**
- * @component JobForm
- * @description A form component for creating and editing job postings.
- * @param {Object} props
- * @param {string|null} props.jobId - The ID of the job to edit, or null for creating a new job.
- * @param {Function} props.onSuccess - Callback function to execute on successful form submission.
- * @param {Function} props.onCancel - Callback function to execute when the form is cancelled.
- */
 const JobForm = ({ jobId, onSuccess, onCancel }) => {
     const { addNotification } = useNotifications();
     const [loading, setLoading] = useState(false);
@@ -28,7 +19,6 @@ const JobForm = ({ jobId, onSuccess, onCancel }) => {
     });
     const [errors, setErrors] = useState({});
 
-    // Fetch job data if editing
     useEffect(() => {
         if (jobId) {
             setLoading(true);
@@ -41,15 +31,15 @@ const JobForm = ({ jobId, onSuccess, onCancel }) => {
                         description: job.description,
                         location: job.location,
                         salaryRange: job.salaryRange,
-                        // Ensure arrays are handled correctly for display
+                      
                         requirements: job.requirements ? job.requirements.join('\n') : '',
                         responsibilities: job.responsibilities ? job.responsibilities.join('\n') : '',
-                        // Format date to YYYY-MM-DD for input type="date"
+                       
                         applicationDeadline: job.applicationDeadline ? new Date(job.applicationDeadline).toISOString().split('T')[0] : '',
                     });
                 } catch (err) {
                     addNotification(`Failed to load job: ${err}`, 'error');
-                    onCancel(); // Go back if job not found or error
+                    onCancel(); 
                 } finally {
                     setLoading(false);
                 }
@@ -61,7 +51,7 @@ const JobForm = ({ jobId, onSuccess, onCancel }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
-        // Clear error on change
+       
         if (errors[name]) {
             setErrors((prev) => ({ ...prev, [name]: '' }));
         }
@@ -97,7 +87,6 @@ const JobForm = ({ jobId, onSuccess, onCancel }) => {
 
         setLoading(true);
         try {
-            // Split newline separated strings into arrays for requirements and responsibilities
             const jobDataToSend = {
                 ...formData,
                 requirements: formData.requirements ? formData.requirements.split('\n').map(item => item.trim()).filter(item => item !== '') : [],
@@ -112,7 +101,7 @@ const JobForm = ({ jobId, onSuccess, onCancel }) => {
                 response = await createJob(jobDataToSend);
                 addNotification('Job created successfully!', 'success');
             }
-            onSuccess(response); // Pass the new/updated job back
+            onSuccess(response);
         } catch (err) {
             addNotification(`Failed to ${jobId ? 'update' : 'create'} job: ${err}`, 'error');
         } finally {
@@ -120,7 +109,7 @@ const JobForm = ({ jobId, onSuccess, onCancel }) => {
         }
     };
 
-    if (loading && jobId) { // Only show spinner if loading an existing job, not for new form init
+    if (loading && jobId) { 
         return <LoadingSpinner />;
     }
 

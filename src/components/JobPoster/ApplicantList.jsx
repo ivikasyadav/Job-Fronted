@@ -1,7 +1,7 @@
 // client/src/components/JobPoster/ApplicantList.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { getJobApplicants } from '../../api/jobs';
-import { useNotifications } from '../../hooks/useNotifications';
+import { useNotifications } from '../../hooks/useNotifications.jsx';
 import LoadingSpinner from '../Common/LoadingSpinner';
 
 /**
@@ -111,6 +111,12 @@ const ApplicantList = ({ jobId, onBack, onUpdateStatus }) => {
                                     Applicant Email
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Job Title
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Company Name
+                                </th>
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Applied Date
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -126,6 +132,12 @@ const ApplicantList = ({ jobId, onBack, onUpdateStatus }) => {
                                 <tr key={application._id}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         {application.applicant.email}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {application.job?.jobTitle} {/* Display Job Title */}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {application.job?.companyName} {/* Display Company Name */}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {new Date(application.appliedDate).toLocaleDateString()}
@@ -148,7 +160,8 @@ const ApplicantList = ({ jobId, onBack, onUpdateStatus }) => {
                                         >
                                             Update Status
                                         </button>
-                                        {/* You might add a "View Details" button here if application details are complex */}
+                                        {/* You could add a "View Details" button here if application details are complex,
+                                            like notes, resume, cover letter links, potentially opening a modal */}
                                     </td>
                                 </tr>
                             ))}

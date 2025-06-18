@@ -1,12 +1,7 @@
-// client/src/pages/ProfilePage.jsx
+
 import React from 'react';
 import { useAuth } from '../hooks/useAuth';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
-
-/**
- * @component ProfilePage
- * @description Displays the authenticated user's profile information.
- */
 const ProfilePage = () => {
     const { user, loading } = useAuth();
 

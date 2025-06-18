@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useNotifications } from '../../hooks/useNotifications';
 import LoadingSpinner from '../Common/LoadingSpinner';
 import { validateEmail, validateRequired } from '../../utils/validation';
 
-const Login = ({ setCurrentPage }) => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -13,6 +14,7 @@ const Login = ({ setCurrentPage }) => {
 
     const { login } = useAuth();
     const { addNotification } = useNotifications();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,7 +44,9 @@ const Login = ({ setCurrentPage }) => {
         setLoading(true);
         try {
             await login(email, password);
+            navigate('/dashboard'); 
         } catch (err) {
+            addNotification('Invalid credentials or server error.', 'error');
         } finally {
             setLoading(false);
         }
@@ -63,12 +67,13 @@ const Login = ({ setCurrentPage }) => {
                     <input
                         type="email"
                         id="email"
-                        className={`w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${emailError ? 'border-red-500' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${emailError ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         placeholder="your@example.com"
                         value={email}
                         onChange={(e) => {
                             setEmail(e.target.value);
-                            setEmailError(validateEmail(e.target.value)); 
+                            setEmailError(validateEmail(e.target.value));
                         }}
                         required
                     />
@@ -81,12 +86,13 @@ const Login = ({ setCurrentPage }) => {
                     <input
                         type="password"
                         id="password"
-                        className={`w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${passwordError ? 'border-red-500' : 'border-gray-300'}`}
+                        className={`w-full px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500 ${passwordError ? 'border-red-500' : 'border-gray-300'
+                            }`}
                         placeholder="********"
                         value={password}
                         onChange={(e) => {
                             setPassword(e.target.value);
-                            setPasswordError(validateRequired(e.target.value, 'Password')); // Real-time validation
+                            setPasswordError(validateRequired(e.target.value, 'Password'));
                         }}
                         required
                     />
@@ -103,7 +109,7 @@ const Login = ({ setCurrentPage }) => {
             <p className="mt-6 text-center text-gray-600 text-sm">
                 Don't have an account?{' '}
                 <button
-                    onClick={() => setCurrentPage('signup')}
+                    onClick={() => navigate('/signup')}
                     className="text-blue-600 hover:text-blue-800 font-semibold focus:outline-none"
                 >
                     Sign Up

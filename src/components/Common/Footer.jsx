@@ -1,10 +1,6 @@
-// client/src/components/Common/Footer.jsx
+
 import React from 'react';
 
-/**
- * @component Footer
- * @description Renders the application's footer.
- */
 const Footer = () => {
     return (
         <footer className="bg-gray-800 text-white py-6 mt-8">

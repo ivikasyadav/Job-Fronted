@@ -1,22 +1,14 @@
-// client/src/pages/DashboardApplicant.jsx
+
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import JobListingsApplicant from '../components/JobApplicant/JobListingsApplicant';
 import AppliedJobsDashboard from '../components/JobApplicant/AppliedJobsDashboard';
 import LoadingSpinner from '../components/Common/LoadingSpinner';
 
-/**
- * @component DashboardApplicant
- * @description The main dashboard for job applicants.
- * Allows applicants to browse jobs or view their applied jobs dashboard.
- * @param {Object} props
- * @param {Function} props.setCurrentPage - Function to change the overall app page (e.g., to profile).
- */
 const DashboardApplicant = ({ setCurrentPage }) => {
     const { user, loading: authLoading } = useAuth();
-    const [view, setView] = useState('browse_jobs'); // 'browse_jobs', 'my_applications'
+    const [view, setView] = useState('browse_jobs');
 
-    // Ensure only job applicants can access this dashboard
     if (authLoading) {
         return <LoadingSpinner />;
     }

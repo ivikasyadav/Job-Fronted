@@ -1,18 +1,9 @@
-// client/src/components/JobPoster/ApplicationStatusUpdate.jsx
 import React, { useState, useEffect } from 'react';
 import { getApplicationById, updateApplicationStatus } from '../../api/applications';
 import { useNotifications } from '../../hooks/useNotifications';
 import LoadingSpinner from '../Common/LoadingSpinner';
 import { validateRequired } from '../../utils/validation';
 
-/**
- * @component ApplicationStatusUpdate
- * @description Form to update the status of a specific job application.
- * @param {Object} props
- * @param {string} props.applicationId - The ID of the application to update.
- * @param {Function} props.onSuccess - Callback on successful status update.
- * @param {Function} props.onCancel - Callback to cancel the update process.
- */
 const ApplicationStatusUpdate = ({ applicationId, onSuccess, onCancel }) => {
     const { addNotification } = useNotifications();
     const [loading, setLoading] = useState(true);
@@ -21,18 +12,16 @@ const ApplicationStatusUpdate = ({ applicationId, onSuccess, onCancel }) => {
     const [statusError, setStatusError] = useState('');
 
     const applicationStatuses = ['Applied', 'Interview', 'Offer', 'Rejected', 'Accepted'];
-
-    // Fetch application details on component mount
     useEffect(() => {
         const fetchApplication = async () => {
             setLoading(true);
             try {
                 const fetchedApp = await getApplicationById(applicationId);
                 setApplication(fetchedApp);
-                setNewStatus(fetchedApp.status); // Set initial status from fetched data
+                setNewStatus(fetchedApp.status); 
             } catch (err) {
                 addNotification(`Failed to load application details: ${err}`, 'error');
-                onCancel(); // Go back if application not found or error
+                onCancel(); 
             } finally {
                 setLoading(false);
             }
@@ -62,7 +51,7 @@ const ApplicationStatusUpdate = ({ applicationId, onSuccess, onCancel }) => {
         try {
             await updateApplicationStatus(applicationId, newStatus);
             addNotification('Application status updated successfully!', 'success');
-            onSuccess(); // Trigger a refresh of the applicant list
+            onSuccess(); 
         } catch (err) {
             addNotification(`Failed to update status: ${err}`, 'error');
         } finally {
@@ -101,7 +90,7 @@ const ApplicationStatusUpdate = ({ applicationId, onSuccess, onCancel }) => {
                         value={newStatus}
                         onChange={(e) => {
                             setNewStatus(e.target.value);
-                            setStatusError(''); // Clear error on change
+                            setStatusError(''); 
                         }}
                         required
                     >

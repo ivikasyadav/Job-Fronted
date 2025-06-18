@@ -1,17 +1,10 @@
-// client/src/components/JobApplicant/JobListingsApplicant.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { getJobs } from '../../api/jobs';
 import { applyToJob } from '../../api/applications';
-import { useAuth } from '../../hooks/useAuth';
-import { useNotifications } from '../../hooks/useNotifications';
+import { useAuth } from '../../hooks/useAuth.jsx';
+import { useNotifications } from '../../hooks/useNotifications.jsx';
 import LoadingSpinner from '../Common/LoadingSpinner';
 
-/**
- * @component JobListingsApplicant
- * @description Displays all available job postings for job applicants to browse and apply.
- * @param {Object} props
- * @param {Function} props.onViewAppliedJobs - Callback to navigate to the applicant's applied jobs dashboard.
- */
 const JobListingsApplicant = ({ onViewAppliedJobs }) => {
     const { user } = useAuth();
     const { addNotification } = useNotifications();
@@ -20,7 +13,7 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
     const [error, setError] = useState('');
     const [filterSearch, setFilterSearch] = useState('');
     const [filterLocation, setFilterLocation] = useState('');
-    const [sortBy, setSortBy] = useState('createdAt_desc'); // Default sort
+    const [sortBy, setSortBy] = useState('createdAt_desc');
 
     const fetchJobs = useCallback(async () => {
         setLoading(true);
@@ -53,12 +46,11 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
         }
 
         if (window.confirm('Are you sure you want to apply for this job?')) {
-            setLoading(true); // Can set loading per job card if desired, for now global
+            setLoading(true);
             try {
-                await applyToJob(jobId, {}); // No extra application data for now
+                await applyToJob(jobId, {});
                 addNotification('Application submitted successfully!', 'success');
-                // Optionally refresh the list to show "Applied" status if implemented, or redirect to applied jobs
-                onViewAppliedJobs(); // Redirect to their applied jobs dashboard
+                onViewAppliedJobs();
             } catch (err) {
                 addNotification(`Failed to apply: ${err}`, 'error');
             } finally {
@@ -77,8 +69,8 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-xl mb-10">
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-800">Available Job Postings</h3>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4 sm:mb-0">Available Job Postings</h3>
                 <button
                     onClick={onViewAppliedJobs}
                     className="bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-300 ease-in-out"
@@ -88,9 +80,14 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
             </div>
 
             {/* Filter and Sort Controls */}
-            <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+            <div className="flex flex-wrap items-start gap-4 mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200 shadow-sm">
                 <div className="flex-1 min-w-[200px]">
-                    <label htmlFor="search" className="block text-sm font-medium text-gray-700">Search (Title/Company/Desc)</label>
+                    <label htmlFor="search" className="block text-sm font-medium text-gray-700 flex items-center gap-1">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        Search (Title/Company/Desc)
+                    </label>
                     <input
                         type="text"
                         id="search"
@@ -101,7 +98,13 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
                     />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                    <label htmlFor="location" className="block text-sm font-medium text-gray-700">Location</label>
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-700 flex items-center gap-1">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Location
+                    </label>
                     <input
                         type="text"
                         id="location"
@@ -112,7 +115,12 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
                     />
                 </div>
                 <div className="flex-1 min-w-[150px]">
-                    <label htmlFor="sortBy" className="block text-sm font-medium text-gray-700">Sort By</label>
+                    <label htmlFor="sortBy" className="block text-sm font-medium text-gray-700 flex items-center gap-1">
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
+                        </svg>
+                        Sort By
+                    </label>
                     <select
                         id="sortBy"
                         value={sortBy}
@@ -129,37 +137,53 @@ const JobListingsApplicant = ({ onViewAppliedJobs }) => {
                 </div>
                 <button
                     onClick={fetchJobs}
-                    className="mt-5 sm:mt-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-300 ease-in-out"
+                    className="mt-5 sm:mt-0 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition duration-300 ease-in-out flex items-center gap-1"
                 >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
                     Apply Filters
                 </button>
             </div>
-
 
             {jobs.length === 0 ? (
                 <p className="text-center text-gray-600">No job postings available at the moment.</p>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {jobs.map((job) => (
-                        <div key={job._id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 shadow-sm flex flex-col justify-between">
+                        <div key={job._id} className="bg-gray-50 border border-gray-200 rounded-lg p-6 shadow-sm flex flex-col justify-between hover:shadow-lg hover:border-blue-300 transition duration-300 ease-in-out">
                             <div>
                                 <h4 className="text-xl font-semibold text-gray-800 mb-2">{job.jobTitle}</h4>
                                 <p className="text-blue-600 font-medium mb-1">{job.companyName}</p>
                                 <p className="text-gray-600 text-sm mb-4 line-clamp-3">{job.description}</p>
-                                <div className="text-gray-500 text-xs flex items-center mb-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0L6.343 16.657a8 0 1111.314 0z" />
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                    {job.location}
+
+                                <div className="text-gray-700 text-sm mb-1">
+                                    <span className="font-semibold">Location:</span> {job.location}
                                 </div>
-                                <div className="text-gray-500 text-xs flex items-center mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V9m0 3v2m0 3v1m-6 3h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                    </svg>
-                                    {job.salaryRange}
+                                <div className="text-gray-700 text-sm mb-1">
+                                    <span className="font-semibold">Salary Range:</span> {job.salaryRange}
                                 </div>
-                                <p className="text-gray-500 text-xs mb-4">
+                                <div className="text-gray-700 text-sm mb-1">
+                                    <span className="font-semibold">Application Deadline:</span>{' '}
+                                    {job.applicationDeadline ? new Date(job.applicationDeadline).toLocaleDateString() : 'N/A'}
+                                </div>
+                                <div className="text-gray-700 text-sm mb-4">
+                                    <span className="font-semibold">Posted On:</span>{' '}
+                                    {new Date(job.createdAt).toLocaleDateString()}
+                                </div>
+
+                                {job.requirements && job.requirements.length > 0 && (
+                                    <div className="text-gray-700 text-sm mb-1">
+                                        <span className="font-semibold">Requirements:</span> {job.requirements.join(', ')}
+                                    </div>
+                                )}
+                                {job.responsibilities && job.responsibilities.length > 0 && (
+                                    <div className="text-gray-700 text-sm mb-4">
+                                        <span className="font-semibold">Responsibilities:</span> {job.responsibilities.join(', ')}
+                                    </div>
+                                )}
+
+                                <p className="text-gray-600 text-xs mt-2">
                                     Posted by: <span className="font-semibold">{job.user?.email || 'Unknown'}</span>
                                 </p>
                             </div>
