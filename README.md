@@ -1,12 +1,53 @@
-# React + Vite
+# 💼 Job Application Tracker – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend interface for the Job Application Tracker (Mini CRM).  
+It allows users to register, log in, and manage their job applications in a clean, responsive UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🎯 Features
 
-## Expanding the ESLint configuration
+- 🔐 User authentication (JWT-based)
+- 🧾 Add, view, edit, and delete job applications
+- 🔎 Filter by status: `Applied`, `Interview`, `Offer`, `Rejected`, `Accepted`
+- 📅 Sort by applied date
+- 📱 Responsive layout (mobile-friendly)
+- ✍️ Form validations
+- 🔔 Real-time panel notifications
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠 Tech Stack
+
+- React
+- Axios
+- Tailwind CSS / Bootstrap (or your UI framework)
+- React Router
+- React Toastify (for notifications)
+
+---
+
+## 🚀 Getting Started
+
+### 📁 Step 1: Navigate to `client` folder
+
+```bash
+cd client
+
+📥 Step 2: Install dependencies
+bash
+Copy
+Edit
+npm install
+
+⚙️ Step 3: Create .env file
+env
+Copy
+Edit
+VITE_BACKEND_URL=http://localhost:5000
+
+▶️ Run the App
+bash
+Copy
+Edit
+npm run dev
